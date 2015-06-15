@@ -1,0 +1,28 @@
+<html ng-app="myApp">
+<body>
+<script src="angular.min.js"></script>
+<script src="assets/angular-route.min.js"></script>
+<script>
+var app = angular.module('myApp', ['ngRoute']);
+app.config(function($routeProvider){
+	$routeProvider.
+		when('/', {
+			template:'<ul><li ng-repeat="name in names">{{"name is: "+name.name+"age is :"+name.age}}</li></ul>',
+			controller: 'Kontrol'			
+		}).
+		otherwise({
+			redirectTo:'/'
+		});	
+});
+app.controller('Kontrol', function($scope){
+
+	$scope.names = [{'name': 'dave', 'age' : 15},
+						{'name': 'earnie', 'age' : 23},		
+						{'name': 'sam', 'age' : 11},		
+						{'name': 'bertie', 'age' : 15}		
+								];
+	
+});
+</script>
+<body>
+</html>
