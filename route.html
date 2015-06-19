@@ -1,0 +1,57 @@
+<html ng-app="myApp">
+<body ng-controller="Kontrol">
+<meta charset="utf-8">
+<script src="angular.min.js"></script>
+<script src="assets/angular-route.min.js"></script>
+<script>
+var app = angular.module('myApp', ['ngRoute']);
+app.config(function($routeProvider){
+	$routeProvider.
+		when('/', {
+			templateUrl:'assets/misc/route1.html',
+			controller: 'Kontrol'			
+		}).
+		when('/:countryName', {
+			templateUrl:'assets/misc/route2.html',
+			controller: 'Kontrol2'			
+		}).
+		otherwise({
+			redirectTo:'/'
+		});	
+});
+
+	app.factory('call', function($http){
+		return{
+			list:function(callback){
+			$http.get('names.json').success(callback);
+			}		
+		};
+	});
+
+
+app.controller('Kontrol', function($scope, $http, call){
+	//	$scope.names = [{'name': 'dave', 'age' : 15},
+	//					{'name': 'earnie', 'age' : 23},		
+	//					{'name': 'sam', 'age' : 11},		
+	//					{'name': 'bertie', 'age' : 15}							#1
+	//							];
+	
+	//	$http.get('names.json').success(function(data){
+	//		$scope.names = data;
+	//	});																		#2
+	call.list(function (call){											//		
+	$scope.names = call;
+	});	
+});
+
+app.controller('Kontrol2', function($scope, $routeParams){
+$scope.name = $routeParams.countryName;
+});
+
+</script>
+<div ng-view></div>
+<input type="text" ng-model="dave">
+{{dave}}
+<div ng-repeat="name in names | filter: dave">{{"name is : " + name.name+ "... and age is : " + name.age}}</div>
+</body>
+</html>
